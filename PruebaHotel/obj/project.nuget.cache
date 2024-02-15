@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "a9Z+20LKWPEERT1rSjnTeahqb7lNYgCjNNddFvieNbAZm8xV5zhtbrrsj4hAPYY0+JJ44STLFASDExUyO5ZXHQ==",
+  "dgSpecHash": "K9FPcLZJvm33tSwrNCtGoq05RRi0QsF3Lx/I787ue61X+5Q6nuBmUB3Z4rPh1bVtvifxBymZnXMgT+Je6qTnLA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ANDFE\\source\\repos\\PruebaHotel\\PruebaHotel.csproj",
+  "projectFilePath": "C:\\Users\\ANDFE\\Desktop\\testHotel\\PruebaHotel\\PruebaHotel.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ANDFE\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\ANDFE\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
