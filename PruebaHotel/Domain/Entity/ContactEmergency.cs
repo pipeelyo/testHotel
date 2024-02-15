@@ -1,9 +1,11 @@
 ﻿using PruebaHotel.Application.Dto;
+using System.ComponentModel.DataAnnotations;
 
 namespace PruebaHotel.Domain.Entity
 {
     public class ContactEmergency
     {
+        [Key]
         public int IdContactEmergency { get; set; } // Clave primaria
         public int IdReservation { get; set; } // Clave foránea a la entidad Reservation
         public string FullName { get; set; } // Nombre completo del contacto de emergencia

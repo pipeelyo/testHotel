@@ -1,9 +1,11 @@
 ﻿using PruebaHotel.Application.Dto;
+using System.ComponentModel.DataAnnotations;
 
 namespace PruebaHotel.Domain.Entity
 {
     public class Reservation
     {
+        [Key]
         public int IdReservation { get; set; } // Clave primaria
         public int IdRoom { get; set; } // Clave foránea a la entidad Room
         public DateTime EntryDate { get; set; } // Fecha de entrada
