@@ -3,12 +3,16 @@ using PruebaHotel.Application.Service;
 using PruebaHotel.Controllers;
 using PruebaHotel.Persistence.DataAccess;
 using PruebaHotel.Persistence.Repository;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("Connection");
-builder.Services.AddDbContext<MyContext>(options => options.UseSqlServer(connectionString));
+//var connectionString = builder.Configuration.GetConnectionString("Connection");
+//builder.Services.AddDbContext<MyContext>(options => options.UseSqlServer(connectionString));
+
+var conectionStringPostgres = builder.Configuration.GetConnectionString("PostgreSQLConnection");
+builder.Services.AddDbContext<MyContext>(options => options.UseNpgsql(conectionStringPostgres));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

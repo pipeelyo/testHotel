@@ -32,7 +32,14 @@ namespace PruebaHotel.Persistence.Repository
 
         public async Task<List<Hotel>> GetAllAsync()
         {
-            return await _context.Hotels.ToListAsync();
+            using (var context = new MyContext())
+            {
+                // Consulta LINQ para obtener todos los hoteles
+                var hotels = await context.Hotels.ToListAsync();
+
+                // Retorna la lista de hoteles
+                return hotels;
+            }
         }
 
         public async Task<Hotel> GetByIdAsync(int id)

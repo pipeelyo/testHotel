@@ -18,7 +18,7 @@ namespace PruebaHotel.Controllers
         [HttpGet("/byRoom/{id}")]
         public async Task<IActionResult> getReservationByRoom(int id)
         {
-            var reservations = _reservationService.GetAllByHabitacionAsync(id);
+            var reservations = await _reservationService.GetAllByHabitacionAsync(id);
             if (reservations == null) return NotFound();
             return Ok(reservations);
         }
@@ -26,7 +26,7 @@ namespace PruebaHotel.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> getReservationByid(int id)
         {
-            var reservation = _reservationService.GetByIdAsync(id);
+            var reservation = await _reservationService.GetByIdAsync(id);
             if (reservation == null) return NotFound();
             return Ok(reservation);
         }
@@ -34,7 +34,7 @@ namespace PruebaHotel.Controllers
         [HttpPost]
         public async Task<IActionResult> createReservation(CreateReservationIDto createReservationIDto)
         {
-            var reservation = _reservationService.CreateAsync(createReservationIDto);
+            var reservation = await _reservationService.CreateAsync(createReservationIDto);
             if (reservation == null) return NotFound();
             return Ok(reservation);
         }
@@ -42,7 +42,7 @@ namespace PruebaHotel.Controllers
         [HttpPut]
         public async Task<IActionResult> updateReservation(UpdateReservationIDto updateReservationIDto)
         {
-            var reservation = _reservationService.UpdateAsync(updateReservationIDto);
+            var reservation = await _reservationService.UpdateAsync(updateReservationIDto);
             if (reservation == null) return NotFound();
             return Ok(reservation);
         }
@@ -50,9 +50,8 @@ namespace PruebaHotel.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> deleteReservation(int id)
         {
-            var reservation = _reservationService.DeleteAsync(id);
-            if (reservation == null) return NotFound();
-            return Ok(reservation);
+            await _reservationService.DeleteAsync(id);
+            return Ok();
         }
     }
 }

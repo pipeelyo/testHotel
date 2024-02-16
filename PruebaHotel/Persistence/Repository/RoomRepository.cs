@@ -16,7 +16,14 @@ namespace PruebaHotel.Persistence.Repository
 
         public async Task<IEnumerable<Room>> GetRoomsByHotelAsync(int id)
         {
-            return await _context.Rooms.Where(h => h.IdHotel == id).Include(h => h.Hotel).ToListAsync();
+            using (var context = new MyContext())
+            {
+                // Consulta LINQ para obtener las habitaciones del hotel
+                var rooms = await context.Rooms
+                    .Where(r => r.IdHotel == id)
+                    .ToListAsync();
+                return rooms;
+            }
         }
 
         public async Task<Room> AddAsync(Room room)

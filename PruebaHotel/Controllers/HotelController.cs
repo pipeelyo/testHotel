@@ -65,7 +65,7 @@ namespace PruebaHotel.Controllers
             {
                 var hotel = _hotelService.UpdateAsync(hotelDto);
                 if(hotel == null) return NotFound();
-                return Ok(hotel);
+                return Ok("actualiado");
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);

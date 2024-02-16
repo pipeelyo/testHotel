@@ -19,7 +19,7 @@ namespace PruebaHotel.Controllers
         [HttpGet("/byHotel/{id}")]
         public async Task<IActionResult> getRoomsByHotel(int id)
         {
-            var rooms = _roomService.GetAllByHotelAsync(id);
+            var rooms = await _roomService.GetAllByHotelAsync(id);
             return Ok(rooms);
         }
         

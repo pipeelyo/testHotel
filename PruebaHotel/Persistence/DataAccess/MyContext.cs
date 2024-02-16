@@ -5,10 +5,15 @@ namespace PruebaHotel.Persistence.DataAccess
 {
     public class MyContext: DbContext
     {
-        public MyContext(DbContextOptions<MyContext> options): base(options) 
-        { 
+        public MyContext()
+        {
         }
-        
+
+        public MyContext(DbContextOptions<MyContext> options)
+        : base(options)
+        {
+        }
+
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
 
@@ -19,112 +24,243 @@ namespace PruebaHotel.Persistence.DataAccess
         public DbSet<ContactEmergency> contactEmergencies { get; set; }
 
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=hotel;User Id=postgres;Password=0000");
+        }
 
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // ... other service registrations
+
+            services.AddDbContext<MyContext>(options =>
+            {
+                options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=hotel;User Id=postgres;Password=0000");
+            });
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Relaciones entre entidades
-            modelBuilder.Entity<Room>()
-                .HasOne(h => h.Hotel)
-                .WithMany(h => h.Rooms)
-                .HasForeignKey(h => h.IdHotel)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Configuraciones generales
+            modelBuilder.HasDefaultSchema("public");
 
-            modelBuilder.Entity<Reservation>()
-                .HasOne(r => r.Room)
-                .WithMany(r => r.Reservations)
-                .HasForeignKey(r => r.IdReservation)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Hotel>(entity =>
+            {
+                entity.ToTable("Hotel");
 
-            modelBuilder.Entity<Guest>()
-                .HasOne(p => p.Reservation)
-                .WithMany(p => p.Guests)
-                .HasForeignKey(p => p.IdReservation)
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
-            modelBuilder.Entity<ContactEmergency>()
-                .HasOne(c => c.Reservation)
-                .WithMany(c => c.ContactEmergencies)
-                .HasForeignKey(c => c.IdReservation)
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(e => e.Location)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .IsUnicode(true);
 
-            // Configuraciones de entidades
+                entity.Property(e => e.Description)
+                .HasMaxLength(1000)
+                .IsUnicode(true);
 
-            // Hotel
-            modelBuilder.Entity<Hotel>()
-                .Property(h => h.Name)
-                .HasColumnName("Name")
-                .HasMaxLength(255)
-                .IsRequired();
+                entity.Property(e => e.Enabled)
+                    .HasDefaultValue(true);
 
-            modelBuilder.Entity<Hotel>()
-                .HasIndex(h => h.Name);
+                entity.HasMany(e => e.Rooms)
+                    .WithOne(r => r.Hotel)
+                    .HasForeignKey(r => r.IdHotel);
+            });
 
-            // Habitación
-            modelBuilder.Entity<Room>()
-                .Property(h => h.Type)
-                .HasMaxLength(50)
-                .IsRequired();
+            modelBuilder.Entity<Room>(entity =>
+            {
+                // Tabla y clave primaria
+                entity.ToTable("Room", "public");
+                entity.HasKey(e => e.IdRoom);
 
-            modelBuilder.Entity<Room>()
-                .HasIndex(h => h.Type);
+                // Propiedades con configuraciones
+                entity.Property(e => e.IdRoom)
+                    .HasColumnName("IdRoom") // PostgreSQL columna en minúsculas
+                    .ValueGeneratedOnAdd(); // Auto-incremento
 
-            // Reserva
-            modelBuilder.Entity<Reservation>()
-                .Property(r => r.EntryDate)
-                .IsRequired();
+                entity.Property(e => e.IdHotel)
+                    .IsRequired()
+                    .HasColumnName("IdHotel");
 
-            modelBuilder.Entity<Reservation>()
-                .Property(r => r.DateDeparture)
-                .IsRequired();
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("Type");
 
-            modelBuilder.Entity<Reservation>()
-                .Property(r => r.QuantityPersons)
-                .IsRequired();
+                entity.Property(e => e.CostBase)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired()
+                    .HasColumnName("CostBase");
 
-            modelBuilder.Entity<Reservation>()
-                .Property(r => r.Status)
-                .HasMaxLength(50)
-                .IsRequired();
+                entity.Property(e => e.Tax)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired()
+                    .HasColumnName("Tax");
 
-            // Pasajero
-            modelBuilder.Entity<Guest>()
-                .Property(p => p.FullName)
-                .HasMaxLength(255)
-                .IsRequired();
+                entity.Property(e => e.LocationInHotel)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("LocationInHotel");
 
-            modelBuilder.Entity<Guest>()
-                .Property(p => p.DateBirth)
-                .IsRequired();
+                entity.Property(e => e.Enabled)
+                    .HasDefaultValue(true)
+                    .HasColumnName("Enabled");
 
-            modelBuilder.Entity<Guest>()
-                .Property(p => p.Gender)
-                .HasMaxLength(50)
-                .IsRequired();
+                // Relación con Hotel (uno a muchos)
+                entity.HasOne(e => e.Hotel)
+                    .WithMany(h => h.Rooms)
+                    .HasForeignKey(e => e.IdHotel)
+                    .HasConstraintName("fk_room_hotel"); // Nombre de la restricción de clave externa
 
-            modelBuilder.Entity<Guest>()
-                .Property(p => p.DocumentType)
-                .HasMaxLength(50)
-                .IsRequired();
+                // Índices (opcional)
+                entity.HasIndex(e => e.IdHotel); 
+            });
+            
+            modelBuilder.Entity<Reservation>(entity =>
+            {
+                // Tabla y clave primaria
+                entity.ToTable("Reservation", "public");
+                entity.HasKey(e => e.IdReservation);
 
-            modelBuilder.Entity<Guest>()
-                .Property(p => p.DocumentNumber)
-                .HasMaxLength(50)
-                .IsRequired();
+                // Propiedades con configuraciones
+                entity.Property(e => e.IdReservation)
+                    .HasColumnName("IdReservation")
+                    .ValueGeneratedOnAdd(); // Auto-incremento
 
-            modelBuilder.Entity<Guest>()
-                .HasIndex(p => new { p.DocumentType, p.DocumentNumber });
+                entity.Property(e => e.IdRoom)
+                    .IsRequired()
+                    .HasColumnName("IdRoom");
 
-            // Contacto de Emergencia
-            modelBuilder.Entity<ContactEmergency>()
-                .Property(c => c.FullName)
-                .HasMaxLength(255)
-                .IsRequired();
+                entity.Property(e => e.EntryDate)
+                    .IsRequired()
+                    .HasColumnName("EntryDate")
+                    .HasColumnType("date");
 
-            modelBuilder.Entity<ContactEmergency>()
-                .Property(c => c.Phone)
-                .HasMaxLength(50)
-                .IsRequired();
+                entity.Property(e => e.DepartureDate)
+                    .IsRequired()
+                    .HasColumnName("DepartureDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.QuantityPersons)
+                    .IsRequired()
+                    .HasColumnName("QuantityPersons");
+
+                entity.Property(e => e.Total)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired()
+                    .HasColumnName("Total");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("Status");
+
+                // Relación con Room (uno a muchos)
+                entity.HasOne(e => e.Room)
+                    .WithMany(r => r.Reservations)
+                    .HasForeignKey(e => e.IdRoom)
+                    .HasConstraintName("fk_reservation_room"); // Nombre de la restricción de clave externa
+
+                // Índices (opcional)
+                entity.HasIndex(e => e.IdRoom); // Puedes agregar índices según tus necesidades
+            });
+
+            modelBuilder.Entity<Guest>(entity =>
+            {
+                // Tabla y clave primaria
+                entity.ToTable("Guest", "public");
+                entity.HasKey(e => e.IdGuest);
+
+                // Propiedades con configuraciones
+                entity.Property(e => e.IdGuest)
+                    .HasColumnName("IdGuest")
+                    .ValueGeneratedOnAdd(); // Auto-incremento
+
+                entity.Property(e => e.IdReservation)
+                    .IsRequired()
+                    .HasColumnName("IdReservation");
+
+                entity.Property(e => e.FullName)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("FullName");
+
+                entity.Property(e => e.DateBirth)
+                    .IsRequired()
+                    .HasColumnName("DateBirth")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.Gender)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("Gender");
+
+                entity.Property(e => e.DocumentType)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("DocumentType");
+
+                entity.Property(e => e.DocumentNumber)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("DocumentNumber");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("Email");
+
+                entity.Property(e => e.Phone)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("Phone");
+
+                // Relación con Reservation (uno a muchos)
+                entity.HasOne(e => e.Reservation)
+                    .WithMany(r => r.Guests)
+                    .HasForeignKey(e => e.IdReservation)
+                    .HasConstraintName("fk_guest_reservation"); // Nombre de la restricción de clave externa
+
+                // Índices (opcional)
+                entity.HasIndex(e => e.IdReservation); // Puedes agregar índices según tus necesidades
+            });
+
+            modelBuilder.Entity<ContactEmergency>(entity =>
+            {
+                // Tabla y clave primaria
+                entity.ToTable("ContactEmergency", "public");
+                entity.HasKey(e => e.IdContactEmergency);
+
+                // Propiedades con configuraciones
+                entity.Property(e => e.IdContactEmergency)
+                    .HasColumnName("IdContactEmergency")
+                    .ValueGeneratedOnAdd(); // Auto-incremento
+
+                entity.Property(e => e.IdReservation)
+                    .IsRequired()
+                    .HasColumnName("IdReservation");
+
+                entity.Property(e => e.FullName)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnName("FullName");
+
+                entity.Property(e => e.Phone)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnName("Phone");
+
+                // Relación con Reservation (uno a muchos)
+                entity.HasOne(e => e.Reservation)
+                    .WithMany(r => r.ContactEmergencies)
+                    .HasForeignKey(e => e.IdReservation)
+                    .HasConstraintName("fk_contact_emergency_reservation"); // Nombre de la restricción de clave externa
+
+                // Índices (opcional)
+                entity.HasIndex(e => e.IdReservation); // Puedes agregar índices según tus necesidades
+            });
         }
     }
 }

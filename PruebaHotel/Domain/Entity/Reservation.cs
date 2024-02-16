@@ -9,7 +9,7 @@ namespace PruebaHotel.Domain.Entity
         public int IdReservation { get; set; } // Clave primaria
         public int IdRoom { get; set; } // Clave foránea a la entidad Room
         public DateTime EntryDate { get; set; } // Fecha de entrada
-        public DateTime DateDeparture { get; set; } // Fecha de salida
+        public DateTime DepartureDate { get; set; } // Fecha de salida
         public int QuantityPersons { get; set; } // Cantidad de personas en la reserva
         public decimal Total { get; set; } // Precio total de la reserva
         public string Status { get; set; } // Estado de la reserva (pendiente, confirmada, cancelada)
@@ -24,7 +24,7 @@ namespace PruebaHotel.Domain.Entity
                 IdReservation = IdReservation,
                 IdRoom = IdRoom,
                 EntryDate = EntryDate,
-                DateDeparture = DateDeparture,
+                DepartureDate = DepartureDate,
                 QuantityPersons = QuantityPersons,
                 Total = Total,
                 Status = Status

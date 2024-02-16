@@ -21,7 +21,7 @@ namespace PruebaHotel.Application.Service
             {
                 IdRoom = reservationDto.IdRoom,
                 EntryDate = reservationDto.EntryDate,
-                DateDeparture = reservationDto.DateDeparture,
+                DepartureDate = reservationDto.DepartureDate,
                 QuantityPersons = reservationDto.QuantityPersons,
                 Total = reservationDto.Total,
                 Status= reservationDto.Status,
@@ -61,7 +61,7 @@ namespace PruebaHotel.Application.Service
 
             reservation.IdRoom = reservationDto.IdRoom;
             reservation.EntryDate = reservationDto.EntryDate;
-            reservation.DateDeparture = reservationDto.DateDeparture;
+            reservation.DepartureDate = reservationDto.DepartureDate;
             reservation.QuantityPersons = reservationDto.QuantityPersons;
             reservation.Total = reservationDto.Total;
             reservation.Status = reservationDto.Status;

@@ -29,8 +29,8 @@ namespace PruebaHotel.Persistence.Repository
         {
             return await _context.Reservations.AnyAsync(r =>
                 r.IdRoom == idHabitacion &&
-                (r.EntryDate <= fechaEntrada && r.DateDeparture >= fechaEntrada) ||
-                (r.EntryDate <= fechaSalida && r.DateDeparture >= fechaSalida));
+                (r.EntryDate <= fechaEntrada && r.DepartureDate >= fechaEntrada) ||
+                (r.EntryDate <= fechaSalida && r.DepartureDate >= fechaSalida));
         }
 
         public async Task<Reservation> GetByIdAsync(int id)
