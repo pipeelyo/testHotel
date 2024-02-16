@@ -28,7 +28,7 @@ namespace PruebaHotel.Application.Service
         public async Task<ContactEmergencyIDto> GetByReservaAsync(int idReserva)
         {
             var contactEmergencies = await _contactEmergencyRepository.GetAllAsync();
-            return (ContactEmergencyIDto) contactEmergencies.Select(x => x.ToDto());
+            return (ContactEmergencyIDto)contactEmergencies.Select(x => x.ToDto());
         }
 
         public async Task<ContactEmergencyIDto> UpdateAsync(UpdateContactEmergencyIDto contactEmergencyDto)
