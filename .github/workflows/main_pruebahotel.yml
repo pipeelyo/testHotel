@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP app to Azure Web App - pruebaHotel
+name: Build and deploy ASP app to Azure Web App - Pruebahotel
 
 on:
   push:
@@ -52,15 +52,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DA2DF24E15FC4D428FC52837F76B735C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7F0B79B0DDAA497285585F106766D7CD }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F3E2760356554742A99A1A97D57ED1ED }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_EC672D9DB5FD4F8B9916A0ABDEE88197 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_81E408D54353402AB900D0EB24BD71BA }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8BB2AA72920642B2A560CDA2FF436C17 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'pruebaHotel'
+          app-name: 'Pruebahotel'
           slot-name: 'Production'
           package: .
           
