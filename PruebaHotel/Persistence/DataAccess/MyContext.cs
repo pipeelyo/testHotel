@@ -26,7 +26,7 @@ namespace PruebaHotel.Persistence.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=hotel;User Id=postgres;Password=0000");
+            optionsBuilder.UseNpgsql("Server=prueba-hotel.postgres.database.azure.com;Port=5432;Database=hotel;User Id=postgres;Password=Hotel12345");
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -35,7 +35,7 @@ namespace PruebaHotel.Persistence.DataAccess
 
             services.AddDbContext<MyContext>(options =>
             {
-                options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=hotel;User Id=postgres;Password=0000");
+                options.UseNpgsql("Server=prueba-hotel.postgres.database.azure.com;Port=5432;Database=hotel;User Id=postgres;Password=Hotel12345");
             });
         }
 
