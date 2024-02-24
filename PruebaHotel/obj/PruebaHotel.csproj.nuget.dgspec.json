@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ANDFE\\Desktop\\testHotel\\PruebaHotel\\PruebaHotel.csproj": {}
+    "C:\\Users\\ANDFE\\source\\repos\\testHotel\\PruebaHotel\\PruebaHotel.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ANDFE\\Desktop\\testHotel\\PruebaHotel\\PruebaHotel.csproj": {
+    "C:\\Users\\ANDFE\\source\\repos\\testHotel\\PruebaHotel\\PruebaHotel.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ANDFE\\Desktop\\testHotel\\PruebaHotel\\PruebaHotel.csproj",
+        "projectUniqueName": "C:\\Users\\ANDFE\\source\\repos\\testHotel\\PruebaHotel\\PruebaHotel.csproj",
         "projectName": "PruebaHotel",
-        "projectPath": "C:\\Users\\ANDFE\\Desktop\\testHotel\\PruebaHotel\\PruebaHotel.csproj",
+        "projectPath": "C:\\Users\\ANDFE\\source\\repos\\testHotel\\PruebaHotel\\PruebaHotel.csproj",
         "packagesPath": "C:\\Users\\ANDFE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ANDFE\\Desktop\\testHotel\\PruebaHotel\\obj\\",
+        "outputPath": "C:\\Users\\ANDFE\\source\\repos\\testHotel\\PruebaHotel\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
